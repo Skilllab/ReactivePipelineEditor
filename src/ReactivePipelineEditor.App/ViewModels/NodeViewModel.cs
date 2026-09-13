@@ -8,12 +8,15 @@ public partial class NodeViewModel : ObservableObject
     [ObservableProperty] private string _title;
     [ObservableProperty] private double _x;
     [ObservableProperty] private double _y;
+    [ObservableProperty] private bool _hasOutput;
 
-    public NodeViewModel(string id, string title, double x, double y)
+
+    public NodeViewModel(string id, string title, double x, double y, bool hasOutput = false)
     {
         Id = id;
         _title = title;
         _x = x;
         _y = y;
+        _hasOutput = hasOutput;
     }
 }

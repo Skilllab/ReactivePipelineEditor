@@ -10,7 +10,9 @@ namespace ReactivePipelineEditor.App.ViewModels
 
         public MainViewModel()
         {
-            Nodes.Add(new NodeViewModel("n1", "Csv Source", 200, 150));
+            var nvm = new NodeViewModel("n1", "Csv Source", 200, 150, hasOutput: true);
+            nvm.HasOutput = true;
+            Nodes.Add(nvm);
         }
     }
 }
