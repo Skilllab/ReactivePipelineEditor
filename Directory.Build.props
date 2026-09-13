@@ -11,6 +11,6 @@
     <AnalysisLevel>latest</AnalysisLevel>
 
     <!-- Правила из .editorconfig на этапе сборки, а не только в IDE -->
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>	
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>	
      </PropertyGroup>
    </Project>

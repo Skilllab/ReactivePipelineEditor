@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Nodes\" />
+    <Folder Include="Ports\" />
+    <Folder Include="Connections\" />
+    <Folder Include="Pipeline\" />
+    <Folder Include="Common\" />
+  </ItemGroup>
+
 </Project>

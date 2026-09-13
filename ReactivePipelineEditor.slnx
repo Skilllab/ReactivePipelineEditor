@@ -11,4 +11,5 @@
   </Folder>
   <Project Path="src/ReactivePipelineEditor.App/ReactivePipelineEditor.App.csproj" />
   <Project Path="src/ReactivePipelineEditor.Domain/ReactivePipelineEditor.Domain.csproj" />
+  <Project Path="tests/ReactivePipelineEditor.Domain.Tests/ReactivePipelineEditor.Domain.Tests.csproj" />
 </Solution>
