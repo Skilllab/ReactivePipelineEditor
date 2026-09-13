@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/docs/" />
+  <Folder Name="/docs/adr/">
+    <File Path="docs/adr/ADR-002 Использование CommunityToolkit.Mvvm для MVVM-слоя.md" />
+  </Folder>
   <Folder Name="/Элементы решения/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
