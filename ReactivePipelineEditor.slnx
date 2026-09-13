@@ -2,6 +2,7 @@
   <Folder Name="/Элементы решения/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="src/ReactivePipelineEditor.App/ReactivePipelineEditor.App.csproj" />
 </Solution>
