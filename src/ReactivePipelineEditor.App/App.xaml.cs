@@ -1,9 +1,9 @@
-using System.Configuration;
-using System.Data;
 using System.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using ReactivePipelineEditor.App.ViewModels;
 
 namespace ReactivePipelineEditor.App;
 
@@ -13,9 +13,10 @@ public partial class App : Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
-        //Обертка над DI-контейнером с жизненным циклом, конфигурацией и логированием.
-        //Одна строка дает все, что иначе пришлось бы писать руками
         var builder = Host.CreateApplicationBuilder();
+
+        builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<NodeViewModel>();
 
         builder.Services.AddSingleton<MainWindow>();
 
@@ -36,6 +37,7 @@ public partial class App : Application
             await _host.StopAsync();
             _host.Dispose();
         }
+
         base.OnExit(e);
     }
 }
