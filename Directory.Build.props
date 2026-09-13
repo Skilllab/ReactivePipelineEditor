@@ -1,0 +1,16 @@
+ <Project>
+     <PropertyGroup>
+       <TargetFramework>net10.0</TargetFramework>
+       <Nullable>enable</Nullable>
+       <ImplicitUsings>enable</ImplicitUsings>
+       <LangVersion>latest</LangVersion>
+       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	   
+	   <!-- Включаем анализаторы по умолчанию -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+
+    <!-- Правила из .editorconfig на этапе сборки, а не только в IDE -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>	
+     </PropertyGroup>
+   </Project>
