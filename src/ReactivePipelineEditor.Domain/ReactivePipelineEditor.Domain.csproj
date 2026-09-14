@@ -11,7 +11,6 @@
     <Folder Include="Ports\" />
     <Folder Include="Connections\" />
     <Folder Include="Pipeline\" />
-    <Folder Include="Common\" />
   </ItemGroup>
 
 </Project>
