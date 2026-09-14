@@ -1,29 +1,35 @@
 namespace ReactivePipelineEditor.Domain.Common
 {
     /// <summary>
-    /// Представляет идентификатор соединения между узлами в конвейере
+    /// Представляет идентификатор соединения
     /// </summary>
-    /// <param name="Value">GUID, представляющий идентификатор соединения</param>
-    public readonly record struct ConnectionId(Guid Value)
+    public readonly record struct ConnectionId
     {
         /// <summary>
-        /// Создает новый уникальный идентификатор соединения
+        /// GUID, представляющий идентификатор соединения
         /// </summary>
-        public static ConnectionId New() => new(Guid.NewGuid());
+        public Guid Value { get; }
 
-        /// <summary>
-        /// Создает идентификатор соединения из существующего GUID. Если переданный GUID является пустым, выбрасывается исключение ArgumentException.
-        /// </summary>
-        /// <param name="value">GUID, представляющий идентификатор соединения</param>
-        public static ConnectionId From(Guid value)
+        private ConnectionId(Guid value)
         {
             if (value == Guid.Empty)
                 throw new ArgumentException("ConnectionId не может быть пустым", nameof(value));
-            return new(value);
+            Value = value;
         }
 
         /// <summary>
-        /// Возвращает строковое представление идентификатора соединения, используя метод ToString() для внутреннего значения GUID.
+        /// Создает новый уникальный идентификатор соединения
+        /// </summary>        
+        public static ConnectionId New() => new(Guid.NewGuid());
+
+        /// <summary>
+        /// Создает идентификатор соединения из существующего GUID
+        /// </summary>
+        /// <param name="value">GUID, представляющий идентификатор соединения; не может быть пустым</param>
+        public static ConnectionId From(Guid value) => new(value);
+
+        /// <summary>
+        /// Возвращает строковое представление идентификатора соединения
         /// </summary>
         public override string ToString() => Value.ToString();
     }

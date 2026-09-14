@@ -64,21 +64,6 @@ public class IdTypesTests
 
     [Fact]
     [Trait("Category", "NodeId")]
-    public void NodeId_Deconstruct_Works()
-    {
-        // Arrange
-        var g = Guid.NewGuid();
-        var id = NodeId.From(g);
-
-        // Act
-        id.Deconstruct(out var value);
-
-        // Assert
-        value.Should().Be(g);
-    }
-
-    [Fact]
-    [Trait("Category", "NodeId")]
     public void NodeId_Boxing_EqualsObject()
     {
         // Arrange
@@ -160,21 +145,6 @@ public class IdTypesTests
     }
 
     [Fact]
-    [Trait("Category", "PipelineId")]
-    public void PipelineId_Deconstruct_Works()
-    {
-        // Arrange
-        var g = Guid.NewGuid();
-        var id = PipelineId.From(g);
-
-        // Act
-        id.Deconstruct(out var value);
-
-        // Assert
-        value.Should().Be(g);
-    }
-
-    [Fact]
     [Trait("Category", "ConnectionId")]
     public void ConnectionId_New_IsNotEmpty()
     {
@@ -231,21 +201,6 @@ public class IdTypesTests
 
         // Assert
         a.Should().NotBe(b);
-    }
-
-    [Fact]
-    [Trait("Category", "ConnectionId")]
-    public void ConnectionId_Deconstruct_Works()
-    {
-        // Arrange
-        var g = Guid.NewGuid();
-        var id = ConnectionId.From(g);
-
-        // Act
-        id.Deconstruct(out var value);
-
-        // Assert
-        value.Should().Be(g);
     }
 
     [Fact]

@@ -3,27 +3,33 @@ namespace ReactivePipelineEditor.Domain.Common
     /// <summary>
     /// Представляет идентификатор конвейера
     /// </summary>
-    /// <param name="Value">GUID, представляющий идентификатор конвейера</param>
-    public readonly record struct PipelineId(Guid Value)
+    public readonly record struct PipelineId
     {
+        /// <summary>
+        /// GUID, представляющий идентификатор конвейера
+        /// </summary>
+        public Guid Value { get; }
+
+        private PipelineId(Guid value)
+        {
+            if (value == Guid.Empty)
+                throw new ArgumentException("PipelineId не может быть пустым", nameof(value));
+            Value = value;
+        }
+
         /// <summary>
         /// Создает новый уникальный идентификатор конвейера
         /// </summary>
         public static PipelineId New() => new(Guid.NewGuid());
 
         /// <summary>
-        /// Создает идентификатор конвейера из существующего GUID. Если переданный GUID является пустым, выбрасывается исключение ArgumentException.
+        /// Создает идентификатор конвейера из существующего GUID
         /// </summary>
-        /// <param name="value">GUID, представляющий идентификатор конвейера</param>
-        public static PipelineId From(Guid value)
-        {
-            if (value == Guid.Empty)
-                throw new ArgumentException("PipelineId не может быть пустым", nameof(value));
-            return new(value);
-        }
+        /// <param name="value">GUID, представляющий идентификатор конвейера; не может быть пустым</param>
+        public static PipelineId From(Guid value) => new(value);
 
         /// <summary>
-        /// Возвращает строковое представление идентификатора конвейера, используя метод ToString() для внутреннего значения GUID
+        /// Возвращает строковое представление идентификатора конвейера
         /// </summary>
         public override string ToString() => Value.ToString();
     }
