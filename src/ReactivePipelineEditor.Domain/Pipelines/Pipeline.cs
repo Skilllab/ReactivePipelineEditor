@@ -95,4 +95,78 @@ public sealed class Pipeline
 
         return Result.Ok();
     }
+
+
+    public Result<ExecutionPlan> BuildPlan()
+    {
+        if (_nodes.Count == 0)
+            return Result<ExecutionPlan>.Fail(Error.Validation("Pipeline is empty"));
+
+        // Проверяем, что все input-порты (кроме источников) подключены
+        var dangling = FindDanglingInputs();
+        if (dangling.Count > 0)
+            return Result<ExecutionPlan>.Fail(Error.Validation(
+                $"Unconnected inputs: {string.Join(", ", dangling.Select(d => d.ToString()))}"));
+
+        // Топосорт
+        var order = TopologicalSort();
+        if (order is null)
+            return Result<ExecutionPlan>.Fail(Error.Conflict("Pipeline contains cycles"));
+
+        var plan = new ExecutionPlan(
+            executionOrder: order,
+            nodes: new Dictionary<NodeId, Node>(_nodes),
+            connections: _connections.Values.ToArray());
+
+        return Result<ExecutionPlan>.Ok(plan);
+    }
+
+    private List<PortRef> FindDanglingInputs()
+    {
+        var connectedInputs = _connections.Values.Select(c => c.To).ToHashSet();
+        var result = new List<PortRef>();
+
+        foreach (var node in _nodes.Values)
+            foreach (var port in node.Inputs)
+            {
+                var portRef = new PortRef(node.Id, port.Name);
+                if (!connectedInputs.Contains(portRef))
+                    result.Add(portRef);
+            }
+
+        return result;
+    }
+
+    private List<NodeId>? TopologicalSort()
+    {
+        var inDegree = _nodes.Keys.ToDictionary(id => id, _ => 0);
+        var adjacency = _nodes.Keys.ToDictionary(id => id, _ => new List<NodeId>());
+
+        foreach (var connection in _connections.Values)
+        {
+            var from = connection.From.NodeId;
+            var to = connection.To.NodeId;
+            if (from == to) continue;
+
+            adjacency[from].Add(to);
+            inDegree[to]++;
+        }
+
+        var queue = new Queue<NodeId>(inDegree.Where(kv => kv.Value == 0).Select(kv => kv.Key));
+        var order = new List<NodeId>(_nodes.Count);
+
+        while (queue.Count > 0)
+        {
+            var node = queue.Dequeue();
+            order.Add(node);
+
+            foreach (var next in adjacency[node])
+                if (--inDegree[next] == 0)
+                    queue.Enqueue(next);
+        }
+
+        return order.Count == _nodes.Count ? order : null;
+    }
+
+
 }
