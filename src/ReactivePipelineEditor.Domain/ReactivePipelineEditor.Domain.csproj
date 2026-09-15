@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Nodes\" />
     <Folder Include="Connections\" />
     <Folder Include="Pipeline\" />
   </ItemGroup>

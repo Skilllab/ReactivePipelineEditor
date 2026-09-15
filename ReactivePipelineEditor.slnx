@@ -3,6 +3,7 @@
   <Folder Name="/docs/adr/">
     <File Path="docs/adr/ADR-002 Использование CommunityToolkit.Mvvm для MVVM-слоя.md" />
     <File Path="docs/adr/ADR-003. Использование record struct для NodeId, PipelineId, ConnectionId.md" />
+    <File Path="docs/adr/ADR-004. Использование иерархической системы типов DataType.md" />
   </Folder>
   <Folder Name="/Элементы решения/">
     <File Path=".editorconfig" />
