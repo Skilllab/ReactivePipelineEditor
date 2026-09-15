@@ -18,37 +18,41 @@
         <ItemsControl ItemsSource="{Binding Nodes}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Background="WhiteSmoke"/>
+                    <Canvas Background="WhiteSmoke" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Border Width="140" Height="60"
-                                Background="White"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                CornerRadius="4">
-                            <TextBlock Text="{Binding Title}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                        <Border
+                            Width="140"
+                            Height="60"
+                            Background="White"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{Binding Title}" />
                         </Border>
 
-                        <Ellipse Width="10" Height="10"
-                                 Fill="SteelBlue"
-                                 HorizontalAlignment="Right"
-                                 VerticalAlignment="Center"
-                                 Margin="0,0,-5,0"
-                                 Visibility="{Binding HasOutput,
-                                     Converter={StaticResource BoolToVis}}"/>
+                        <Ellipse
+                            Width="10"
+                            Height="10"
+                            Margin="0,0,-5,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Fill="SteelBlue"
+                            Visibility="{Binding HasOutput, Converter={StaticResource BoolToVis}}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
