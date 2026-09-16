@@ -9,6 +9,7 @@
     <Project Path="tests/ReactivePipelineEditor.Domain.Tests/ReactivePipelineEditor.Domain.Tests.csproj" />
     <Project Path="tests/ReactivePipelineEditor.Runtime.Tests/ReactivePipelineEditor.Runtime.Tests.csproj" />
     <Project Path="tools/DomainSmokeTest/DomainSmokeTest.csproj" />
+    <Project Path="tools/RuntimeSmokeTest/RuntimeSmokeTest.csproj" />
   </Folder>
   <Folder Name="/Элементы решения/">
     <File Path=".editorconfig" />

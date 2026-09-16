@@ -40,43 +40,27 @@ public sealed class CsvSourceNodeExecutor : INodeExecutor
             using var reader = new StreamReader(stream, Encoding.GetEncoding(_node.Encoding));
 
             // Если HasHeader = true, первая строка — это имена полей.
-            // Читаем её сразу, до основного цикла.
-            // null означает, что файл пустой — заголовков нет.
             var headers = _node.HasHeader
                 ? (await reader.ReadLineAsync(cancellationToken))?.Split(_node.Delimiter)
                 : null;
 
-            // Буфер для батча. Создаём заранее с ёмкостью BatchSize,
-            // чтобы избежать реаллокаций при добавлении элементов.
             var batch = new List<RawRecord>(_node.BatchSize);
-
-            // Номер строки. Если был заголовок — начинаем с 1,
-            // потому что следующая строка файла имеет номер 2.
-            // Если заголовка нет — начинаем с 0, следующая строка = 1.
             var lineNumber = _node.HasHeader ? 1 : 0;
 
-            // Основной цикл: читаем до конца файла или до отмены.
-            // Проверяем EndOfStream и cancellationToken на каждой итерации.
-            while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
+            // Основной цикл: читаем строки асинхронно, пока не дойдем до конца файла (null)
+            // и пока не затребована отмена операции.
+            while (!cancellationToken.IsCancellationRequested)
             {
                 var line = await reader.ReadLineAsync(cancellationToken);
-                if (line is null) break;
+                if (line is null)
+                    break; // Достигнут конец файла (EOF)
 
                 lineNumber++;
 
-                // Разбиваем строку по разделителю.
-                // Split без StringSplitOptions.RemoveEmptyEntries,
-                // потому что пустые поля — это валидные данные
-                // (например, "1,,A" — три поля, второе пустое).
                 var fields = line.Split(_node.Delimiter);
-
-                // Создаём RawRecord. Headers может быть null — это ок,
-                // RawRecord.GetField корректно обработает этот случай.
                 batch.Add(new RawRecord(lineNumber, fields, headers));
 
                 // Если набрали полный батч — эмитим его и очищаем буфер.
-                // Эмитим по одному, потому что выходной канал — поток,
-                // а не коллекция. Каждый RawRecord попадает в канал отдельно.
                 if (batch.Count >= _node.BatchSize)
                 {
                     foreach (var record in batch)
@@ -86,9 +70,8 @@ public sealed class CsvSourceNodeExecutor : INodeExecutor
                 }
             }
 
-            // Эмитим остаток батча (последняя неполная порция).
-            // Проверяем, что не отменили — если отмена, не пишем.
-            if (!cancellationToken.IsCancellationRequested)
+            // Эмитим остаток батча (последняя неполная порция), если не было отмены.
+            if (!cancellationToken.IsCancellationRequested && batch.Count > 0)
             {
                 foreach (var record in batch)
                     await output.WriteAsync(record, cancellationToken);
@@ -96,9 +79,6 @@ public sealed class CsvSourceNodeExecutor : INodeExecutor
         }
         finally
         {
-            // Закрываем канал в finally — гарантированно, даже при
-            // исключении или отмене. Downstream увидит завершение потока
-            // и сможет корректно завершиться сам.
             output.Complete();
         }
     }

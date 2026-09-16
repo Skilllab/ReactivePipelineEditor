@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 
 using ReactivePipelineEditor.Domain.Common;
 using ReactivePipelineEditor.Domain.Nodes;
-using ReactivePipelineEditor.Domain.Pipeline;
 using ReactivePipelineEditor.Domain.Pipelines;
 using ReactivePipelineEditor.Domain.Ports;
 using ReactivePipelineEditor.Runtime.Metrics;
