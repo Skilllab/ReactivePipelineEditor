@@ -50,6 +50,7 @@ public sealed class PipelineRunner
         var nodeTasks = new List<Task>();
         var nodeStats = new Dictionary<NodeId, NodeStats>();
         var channels = CreateChannels(plan, options.ChannelCapacity);
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
         try
         {
@@ -59,29 +60,34 @@ public sealed class PipelineRunner
                 var executor = CreateExecutor(node);
                 var context = CreateContext(node, plan, channels, nodeStats);
 
-                var task = RunNodeAsync(node, executor, context, nodeStats, cancellationToken);
+                var task = RunNodeAsync(node, executor, context, nodeStats, linkedCts.Token);
                 nodeTasks.Add(task);
             }
 
-            await Task.WhenAll(nodeTasks).ConfigureAwait(false);
+            var allNodes = Task.WhenAll(nodeTasks);
+            var completed = await Task.WhenAny(allNodes, Task.Delay(Timeout.Infinite, linkedCts.Token));
+
+            if (completed != allNodes)
+            {
+                // Отмена: даём нодам DrainTimeout на завершение
+                linkedCts.CancelAfter(options.DrainTimeout);
+                try { await allNodes; } catch (OperationCanceledException) { }
+            }
+            else
+            {
+                await allNodes;
+            }
 
             stopwatch.Stop();
             return new PipelineRunResult(
-                PipelineRunStatus.Completed,
-                stopwatch.Elapsed,
-                nodeStats);
-        }
-        catch (OperationCanceledException)
-        {
-            stopwatch.Stop();
-            return new PipelineRunResult(
-                PipelineRunStatus.Cancelled,
+                linkedCts.IsCancellationRequested ? PipelineRunStatus.Cancelled : PipelineRunStatus.Completed,
                 stopwatch.Elapsed,
                 nodeStats);
         }
         catch (Exception ex)
         {
             stopwatch.Stop();
+            linkedCts.Cancel();
             return new PipelineRunResult(
                 PipelineRunStatus.Failed,
                 stopwatch.Elapsed,
@@ -194,4 +200,6 @@ public sealed class PipelineRunner
 
         return channels;
     }
+
+
 }
