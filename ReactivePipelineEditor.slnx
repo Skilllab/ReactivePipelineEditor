@@ -5,6 +5,11 @@
     <File Path="docs/adr/ADR-003. Использование record struct для NodeId, PipelineId, ConnectionId.md" />
     <File Path="docs/adr/ADR-004. Использование иерархической системы типов DataType.md" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ReactivePipelineEditor.Domain.Tests/ReactivePipelineEditor.Domain.Tests.csproj" />
+    <Project Path="tests/ReactivePipelineEditor.Runtime.Tests/ReactivePipelineEditor.Runtime.Tests.csproj" />
+    <Project Path="tools/DomainSmokeTest/DomainSmokeTest.csproj" />
+  </Folder>
   <Folder Name="/Элементы решения/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
@@ -13,6 +18,5 @@
   </Folder>
   <Project Path="src/ReactivePipelineEditor.App/ReactivePipelineEditor.App.csproj" />
   <Project Path="src/ReactivePipelineEditor.Domain/ReactivePipelineEditor.Domain.csproj" />
-  <Project Path="tests/ReactivePipelineEditor.Domain.Tests/ReactivePipelineEditor.Domain.Tests.csproj" />
-  <Project Path="tools/DomainSmokeTest/DomainSmokeTest.csproj" />
+  <Project Path="src/ReactivePipelineEditor.Runtime/ReactivePipelineEditor.Runtime.csproj" />
 </Solution>
